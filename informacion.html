@@ -6,6 +6,7 @@
     <title>Informacion</title>
 </head>
 <body>
+
     <h3>Hola Mundo</h3>
     <form id="crud form">
         <label for="nombre">Nombre: </label>
@@ -14,5 +15,39 @@
         <input type="number" id="edad">
         <button type="button" onclick="CrearResgitro()">Crear </button>
     </form>
+
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import {getDatabase, ref, push, onValue, remove} from"https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDSSOr0s8o0W3FUUg1hfyXsvMEFgZh6KPA",
+          authDomain: "crud-prueba-f0b3c.firebaseapp.com",
+          databaseURL: "https://crud-prueba-f0b3c-default-rtdb.firebaseio.com",
+          projectId: "crud-prueba-f0b3c",
+          storageBucket: "crud-prueba-f0b3c.appspot.com",
+          messagingSenderId: "904799312887",
+          appId: "1:904799312887:web:73feb01d6f0d740f6bacf2"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+
+        ///evento crear o ingresar datos
+
+        window.CrearResgitro= function(){
+            const nombre = document.getElementById('nombre').value;
+            const edad = document.getElementById('edad').value;
+        } 
+
+</script>
 </body>
 </html>
