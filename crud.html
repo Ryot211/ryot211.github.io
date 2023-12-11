@@ -134,7 +134,7 @@
                 console.log(marca,anio,kilometraje,combustible,estado);
 
                 push(
-                    ref(database, 'auto'),
+                    ref(database, 'Gallardo'),
                     {
                         marca:marca,
                         año:anio,
@@ -167,7 +167,7 @@
         }
 
         // Escuchar cambios en la base de datos y llamar a VisualizarAutos() cuando se reciban datos
-        const datosRef = ref(database, 'auto');
+        const datosRef = ref(database, 'Gallardo');
         onValue(datosRef, (snapshot) => {
             const data = snapshot.val();
             VisualizarAutos(data);
@@ -176,7 +176,7 @@
         //Llenar el select
         window.onload = function() {
             const selectMarca = document.getElementById('selectMarca');
-            const autosRef = ref(database, 'auto');
+            const autosRef = ref(database, 'Gallardo');
 
             // Consulta para obtener todas las keys (IDs) existentes en la base de datos
             onValue(autosRef, (snapshot) => {
@@ -198,7 +198,7 @@
             const keyEliminar = document.getElementById('selectMarca').value;
             console.log('Clave a eliminar:', keyEliminar); // Verifica que la clave sea correcta
 
-            const autosRef = ref(database, `auto/${keyEliminar}`);
+            const autosRef = ref(database, `Gallardo/${keyEliminar}`);
 
             // Eliminar el auto utilizando la referencia directa al elemento
             remove(autosRef)
@@ -215,7 +215,7 @@
             window.onload = function() {
                 const selectMarca = document.getElementById('selectMarca');
                 const selectActualizar = document.getElementById('selectActualizar');
-                const autosRef = ref(database, 'auto');
+                const autosRef = ref(database, 'Gallardo');
 
                 // Consulta para obtener todas las keys (IDs) existentes en la base de datos
                 onValue(autosRef, (snapshot) => {
@@ -237,7 +237,7 @@
         window.addEventListener('DOMContentLoaded', function() {
             const selectMarca = document.getElementById('selectMarca');
             const selectActualizar = document.getElementById('selectActualizar');
-            const autosRef = ref(database, 'auto');
+            const autosRef = ref(database, 'Gallardo');
 
             // Consulta para obtener todas las keys (IDs) existentes en la base de datos
             onValue(autosRef, (snapshot) => {
@@ -270,7 +270,7 @@
                         const keyActualizar = selectActualizar.value;
                         const nuevaMarca = nuevaMarcaElement.value;
 
-                        const autosRef = ref(database, `auto/${keyActualizar}`);
+                        const autosRef = ref(database, `Gallardo/${keyActualizar}`);
 
                         update(autosRef, {
                             marca: nuevaMarca,
