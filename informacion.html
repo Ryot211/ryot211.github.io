@@ -17,32 +17,6 @@
         <button type="button" onclick="CrearResgitro()">Crear </button>
     </form>
 
-    <br>
-    <br>
-    <form id="crud form">
-        <div class="mb-3">
-            <label for="marca" class="form-label">Marca:</label>
-            <input type="text" class="form-control" id="marca">
-        </div>
-        <div class="mb-3">
-            <label for="anio" class="form-label">Año de fabricacion:</label> 
-            <input type="text" class="form-control" id="anio">
-        </div>
-        <div class="mb-3">
-            <label for="kilometraje" class="form-label">Kilometraje:</label>
-            <input type="text" class="form-control" id="kilometraje">
-        </div>
-        <div class="mb-3">
-            <label for="combustible" class="form-label">Tipo de combustible:</label>
-            <input type="text" class="form-control" id="combustible">
-        </div>
-        <div class="mb-3">
-            <label for="estado" class="form-label">Estado:</label>
-            <input type="text" class="form-control" id="estado">
-        </div>
-        <button type="submit" onclick="IngresarAuto()" class="btn btn-primary">Guardar</button>
-    </form>
-
 
 
     <script type="module">
@@ -83,27 +57,6 @@
                 }
             )
         } 
-
-        window.IngresarAuto= function(){
-                const marca = document.getElementById('marca').value;
-                const anio = document.getElementById('anio').value;
-                const kilometraje = document.getElementById('kilometraje').value;
-                const combustible = document.getElementById('combustible').value;
-                const estado = document.getElementById('estado').value;
-                console.log(marca,anio,kilometraje,combustible,estado);
-
-                push(
-                    ref(database, 'auto'),
-                    {
-                        marca:marca,
-                        año:anio,
-                        kilometraje:kilometraje,
-                        combustible:combustible,
-                        estado:estado
-                    }
-                )
-            } 
-
         
 
     </script>
