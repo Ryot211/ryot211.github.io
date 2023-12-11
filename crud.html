@@ -1,0 +1,296 @@
+<html>
+<head>
+
+</head>
+<body>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <h2 class="navbar-brand">Formulario de Ingreso de Datos</h2>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Ingreso de Datos</h1>
+                <form id="crud form">
+                    <div class="mb-3">
+                        <label for="marca" class="form-label">Marca:</label>
+                        <input type="text" class="form-control" id="marca">
+                    </div>
+                    <div class="mb-3">
+                        <label for="anio" class="form-label">Año de fabricacion:</label> 
+                        <input type="text" class="form-control" id="anio">
+                    </div>
+                    <div class="mb-3">
+                        <label for="kilometraje" class="form-label">Kilometraje:</label>
+                        <input type="text" class="form-control" id="kilometraje">
+                    </div>
+                    <div class="mb-3">
+                        <label for="combustible" class="form-label">Tipo de combustible:</label>
+                        <input type="text" class="form-control" id="combustible">
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <input type="text" class="form-control" id="estado">
+                    </div>
+                    <button type="button" onclick="IngresarAuto()" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+           <!-- Parte del HTML para seleccionar la marca del auto que se quiere eliminar -->
+           <div class="col-md-6">
+            <div class="row">
+                <div class="row">
+                    <h1>Eliminar Datos</h1>
+                    <h3>Seleccione el ID del auto que desea borrar</h3>
+                    <select class="form-select mb-3" id="selectMarca">
+                       
+                    </select>
+                    <button  type="button" onclick="EliminarAuto()" class="btn btn-danger">Eliminar</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <h1>Actualizar Datos</h1>
+                        <form id="actualizarForm" onsubmit="return false;">
+                            <div class="mb-3">
+                                <label for="selectActualizar" class="form-label">Seleccione un auto:</label>
+                                <select class="form-select mb-3" id="selectActualizar" onchange="cargarDatos()">
+                                    <!-- Opciones dinámicas del select -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nuevaMarca" class="form-label">Nueva Marca:</label>
+                                <input type="text" class="form-control" id="nuevaMarca">
+                            </div>
+                            <button onclick="ActualizarAuto()" class="btn btn-primary">Actualizar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+
+          </div>
+           
+
+        <div class="row mt-12">
+            <div class="col-md-8">
+                <h1>Listar Datos</h1>
+                <table class="table" id="tabla-datos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Marca</th>
+                            <th>Año</th>
+                            <th>Kilometraje</th>
+                            <th>Combustible</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarán los datos listados -->
+                    </tbody>
+                </table>
+                </div>
+
+
+        </div>
+    </div>  
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import {getDatabase, ref, push, onValue, remove, update} from"https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+    
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyDSSOr0s8o0W3FUUg1hfyXsvMEFgZh6KPA",
+        authDomain: "crud-prueba-f0b3c.firebaseapp.com",
+        databaseURL: "https://crud-prueba-f0b3c-default-rtdb.firebaseio.com",
+        projectId: "crud-prueba-f0b3c",
+        storageBucket: "crud-prueba-f0b3c.appspot.com",
+        messagingSenderId: "904799312887",
+        appId: "1:904799312887:web:73feb01d6f0d740f6bacf2"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+
+        ///evento crear o ingresar datos
+
+        window.IngresarAuto= function(){
+                const marca = document.getElementById('marca').value;
+                const anio = document.getElementById('anio').value;
+                const kilometraje = document.getElementById('kilometraje').value;
+                const combustible = document.getElementById('combustible').value;
+                const estado = document.getElementById('estado').value;
+                console.log(marca,anio,kilometraje,combustible,estado);
+
+                push(
+                    ref(database, 'auto'),
+                    {
+                        marca:marca,
+                        año:anio,
+                        kilometraje:kilometraje,
+                        combustible:combustible,
+                        estado:estado
+                    }
+                )
+            } 
+        //evento para jalar datos 
+        window.VisualizarAutos = function mostrarDatosEnTabla(data) {
+            const tablaDatos = document.getElementById('tabla-datos').querySelector('tbody');
+            // Limpiar la tabla antes de agregar nuevos datos
+            tablaDatos.innerHTML = '';
+            // Recorrer los datos y agregarlos a la tabla HTML
+            for (const key in data) {
+                if (Object.hasOwnProperty.call(data, key)) {
+                    const auto = data[key];
+                    const row = tablaDatos.insertRow();
+                    row.innerHTML = `
+                        <td>${key}</td>
+                        <td>${auto.marca}</td>
+                        <td>${auto.año}</td>
+                        <td>${auto.kilometraje}</td>
+                        <td>${auto.combustible}</td>
+                        <td>${auto.estado}</td>
+                    `;
+                }
+            }
+        }
+
+        // Escuchar cambios en la base de datos y llamar a VisualizarAutos() cuando se reciban datos
+        const datosRef = ref(database, 'auto');
+        onValue(datosRef, (snapshot) => {
+            const data = snapshot.val();
+            VisualizarAutos(data);
+        });
+
+        //Llenar el select
+        window.onload = function() {
+            const selectMarca = document.getElementById('selectMarca');
+            const autosRef = ref(database, 'auto');
+
+            // Consulta para obtener todas las keys (IDs) existentes en la base de datos
+            onValue(autosRef, (snapshot) => {
+                selectMarca.innerHTML = ''; // Limpiar select antes de agregar opciones
+                snapshot.forEach((childSnapshot) => {
+                    const key = childSnapshot.key; // Obtener la clave (key) del auto
+                    const option = document.createElement('option');
+                    option.value = key; // Utilizar la clave (key) como valor
+                    option.textContent = key; // Mostrar la clave (key) como texto
+                    selectMarca.appendChild(option);
+                });
+            });
+        };
+
+
+
+        //Evento para poder Eliminar un registro
+        window.EliminarAuto = function() {
+            const keyEliminar = document.getElementById('selectMarca').value;
+            console.log('Clave a eliminar:', keyEliminar); // Verifica que la clave sea correcta
+
+            const autosRef = ref(database, `auto/${keyEliminar}`);
+
+            // Eliminar el auto utilizando la referencia directa al elemento
+            remove(autosRef)
+                .then(() => {
+                    alert(`El auto con la ID ${keyEliminar} ha sido eliminado.`);
+                })
+                .catch((error) => {
+                    console.error('Error al eliminar el auto:', error);
+                    alert('Ha ocurrido un error al intentar eliminar el auto.');
+                });
+        };
+
+        // Llenar select
+            window.onload = function() {
+                const selectMarca = document.getElementById('selectMarca');
+                const selectActualizar = document.getElementById('selectActualizar');
+                const autosRef = ref(database, 'auto');
+
+                // Consulta para obtener todas las keys (IDs) existentes en la base de datos
+                onValue(autosRef, (snapshot) => {
+                    selectMarca.innerHTML = ''; // Limpiar select antes de agregar opciones
+                    selectActualizar.innerHTML = ''; // Limpiar select antes de agregar opciones
+
+                    snapshot.forEach((childSnapshot) => {
+                        const key = childSnapshot.key; // Obtener la clave (key) del auto
+                        const option = document.createElement('option');
+                        option.value = key; // Utilizar la clave (key) como valor
+                        option.textContent = key; // Mostrar la clave (key) como texto
+
+                        selectMarca.appendChild(option.cloneNode(true)); // Para eliminar
+                        selectActualizar.appendChild(option); // Para actualizar
+                    });
+                });
+            };
+      // Llenar select y cargar datos al seleccionar un auto
+        window.addEventListener('DOMContentLoaded', function() {
+            const selectMarca = document.getElementById('selectMarca');
+            const selectActualizar = document.getElementById('selectActualizar');
+            const autosRef = ref(database, 'auto');
+
+            // Consulta para obtener todas las keys (IDs) existentes en la base de datos
+            onValue(autosRef, (snapshot) => {
+                selectMarca.innerHTML = ''; // Limpiar select antes de agregar opciones
+                selectActualizar.innerHTML = ''; // Limpiar select antes de agregar opciones
+
+                snapshot.forEach((childSnapshot) => {
+                    const key = childSnapshot.key; // Obtener la clave (key) del auto
+                    const option = document.createElement('option');
+                    option.value = key; // Utilizar la clave (key) como valor
+                    option.textContent = key; // Mostrar la clave (key) como texto
+
+                    selectMarca.appendChild(option.cloneNode(true)); // Para eliminar
+                    selectActualizar.appendChild(option); // Para actualizar
+                });
+            });
+        });
+
+        // Evento para poder Actualizar un registro
+         // Evento para poder Actualizar un registro
+            window.addEventListener('DOMContentLoaded', function() {
+                window.ActualizarAuto = function() {
+                    const selectActualizar = document.getElementById('selectActualizar');
+                    const nuevaMarcaElement = document.getElementById('nuevaMarca');
+
+                    console.log(selectActualizar); // Verificar si se obtiene el elemento de selectActualizar
+                    console.log(nuevaMarcaElement); // Verificar si se obtiene el elemento de nuevaMarca
+
+                    if (selectActualizar && nuevaMarcaElement) {
+                        const keyActualizar = selectActualizar.value;
+                        const nuevaMarca = nuevaMarcaElement.value;
+
+                        const autosRef = ref(database, `auto/${keyActualizar}`);
+
+                        update(autosRef, {
+                            marca: nuevaMarca,
+                        })
+                        .then(() => {
+                            alert(`El auto con la ID ${keyActualizar} ha sido actualizado.`);
+                        })
+                        .catch((error) => {
+                            console.error('Error al actualizar el auto:', error);
+                            alert('Ha ocurrido un error al intentar actualizar el auto.');
+                        });
+                    } else {
+                        console.error('Alguno de los elementos no se encontró en el DOM');
+                    }
+                };
+            });
+        
+
+
+
+    </script>
+</body>
+</html>
