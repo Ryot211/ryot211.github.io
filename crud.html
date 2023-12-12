@@ -17,23 +17,34 @@
                 <form id="crud form">
                     <div class="mb-3">
                         <label for="marca" class="form-label">Marca:</label>
-                        <input type="text" class="form-control" id="marca">
+                        <input type="text" class="form-control" id="marca" required>
+                        <div class="invalid-feedback">Por favor, ingresa una marca.</div>
                     </div>
                     <div class="mb-3">
                         <label for="anio" class="form-label">Año de fabricacion:</label> 
-                        <input type="text" class="form-control" id="anio">
+                        <input type="text" class="form-control" id="anio" pattern="\d{4}" title="Ingresa un año válido (formato: YYYY)" required>
+                        <div class="invalid-feedback">Ingresa un año válido (formato: YYYY).</div>
                     </div>
+                    
                     <div class="mb-3">
                         <label for="kilometraje" class="form-label">Kilometraje:</label>
-                        <input type="text" class="form-control" id="kilometraje">
+                        <input type="text" class="form-control" id="kilometraje" pattern="\d+" title="El kilometraje debe contener solo números" required>
+                        <div class="invalid-feedback">El kilometraje debe contener solo números.</div>
                     </div>
                     <div class="mb-3">
                         <label for="combustible" class="form-label">Tipo de combustible:</label>
                         <input type="text" class="form-control" id="combustible">
                     </div>
+                    
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado:</label>
-                        <input type="text" class="form-control" id="estado">
+                        <select class="form-select" id="estado" required>
+                            <option value="">Selecciona un estado</option>
+                            <option value="Nuevo">Nuevo</option>
+                            <option value="Usado">Usado</option>
+                            <option value="Reacondicionado">Reacondicionado</option>
+                        </select>
+                        <div class="invalid-feedback">Por favor, selecciona un estado.</div>
                     </div>
                     <button type="button" onclick="IngresarAuto()" class="btn btn-primary">Guardar</button>
                 </form>
@@ -61,7 +72,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="nuevaMarca" class="form-label">Nueva Marca:</label>
-                                <input type="text" class="form-control" id="nuevaMarca">
+                                <input type="text" class="form-control" id="nuevaMarca" required>
+                                <div class="invalid-feedback">Por favor, ingresa una nueva marca.</div>
                             </div>
                             <button onclick="ActualizarAuto()" class="btn btn-primary">Actualizar</button>
                         </form>
